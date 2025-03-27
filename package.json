@@ -1,0 +1,24 @@
+{
+  "name": "tomatodo",
+  "version": "1.0.0",
+  "description": "Chrome 拡張機能の個人開発",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NAVYSHUNTA/Tomatodo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NAVYSHUNTA/Tomatodo/issues"
+  },
+  "homepage": "https://github.com/NAVYSHUNTA/Tomatodo#readme",
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "typescript": "^5.8.2"
+  }
+}
