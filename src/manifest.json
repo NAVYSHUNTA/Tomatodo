@@ -9,8 +9,14 @@
         "48": "images/icon_48.png",
         "128": "images/icon_128.png"
     },
+    "permissions": [
+        "storage"
+    ],
     "action": {
         "default_icon": "images/icon_128.png",
         "default_popup": "popup/popup.html"
+    },
+    "background": {
+        "service_worker": "scripts/background.js"
     }
 }

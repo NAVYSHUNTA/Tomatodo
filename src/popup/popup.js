@@ -1,10 +1,14 @@
 "use strict";
-// ↓ は後で消す
-console.log("file_name : popup.ts or popup.js");
 if (typeof document === "undefined") {
     console.log("document is undefined");
 }
 else {
+    chrome.storage.local.get(["todoData"], function (storage) {
+        const todoTextArea = document.getElementById("todo");
+        if (todoTextArea && storage.todoData) {
+            todoTextArea.value = storage.todoData;
+        }
+    });
     document.addEventListener("click", (e) => {
         const btn = e.target;
         switch (btn?.id) {
@@ -22,8 +26,13 @@ else {
                 btn.id = "start-btn";
                 btn.textContent = "スタート";
                 break;
+            case "save-todo-btn":
+                chrome.runtime.sendMessage({ action: "click-save-todo-btn", todoData: document.getElementById("todo").value }, function (response) {
+                    alert(response.replyMessage);
+                });
+                break;
             default:
-                console.log("nothing process");
+                console.log("ボタンでない箇所をクリックしました。");
                 break;
         }
     });

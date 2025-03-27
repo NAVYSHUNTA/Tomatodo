@@ -1,9 +1,13 @@
-// ↓ は後で消す
-console.log("file_name : popup.ts or popup.js");
-
 if (typeof document === "undefined") {
     console.log("document is undefined");
 } else {
+    chrome.storage.local.get(["todoData"], function (storage) {
+        const todoTextArea = document.getElementById("todo") as HTMLInputElement;
+        if (todoTextArea && storage.todoData) {
+            todoTextArea.value = storage.todoData;
+        }
+    });
+
     document.addEventListener("click", (e: MouseEvent) => {
         const btn = e.target as HTMLButtonElement;
 
@@ -26,8 +30,17 @@ if (typeof document === "undefined") {
                 btn.textContent = "スタート";
                 break;
 
+            case "save-todo-btn":
+                chrome.runtime.sendMessage(
+                    { action: "click-save-todo-btn", todoData: (document.getElementById("todo") as HTMLInputElement).value },
+                    function (response) {
+                        alert(response.replyMessage);
+                    }
+                );
+                break;
+
             default:
-                console.log("nothing process");
+                console.log("ボタンでない箇所をクリックしました。");
                 break;
         }
     });
