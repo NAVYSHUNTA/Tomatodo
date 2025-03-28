@@ -1,6 +1,6 @@
-// todo を保存する処理
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "click-save-todo-btn") {
+        // todo を保存する
         chrome.storage.local.set(
             { "todoData": message.todoData },
             function () {
