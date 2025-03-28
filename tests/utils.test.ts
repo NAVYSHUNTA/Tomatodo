@@ -5,7 +5,7 @@ describe("ポモドーロの開始時刻に関するテスト", () => {
         jest.useFakeTimers().setSystemTime(new Date("2025-03-28T01:23:45").getTime());
     });
 
-    it('現在時刻を取得できるかどうか', () => {
+    it("現在時刻を取得できるかどうか", () => {
         const current = getCurrentTimer();
         const expected = { hour: 1, minute: 23, second: 45 };
         expect(current.hour).toEqual(expected.hour);
