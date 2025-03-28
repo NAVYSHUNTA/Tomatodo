@@ -1,47 +1,42 @@
-if (typeof document === "undefined") {
-    console.log("document is undefined");
-} else {
-    chrome.storage.local.get(["todoData"], function (storage) {
-        const todoTextArea = document.getElementById("todo") as HTMLInputElement;
-        if (todoTextArea && storage.todoData) {
-            todoTextArea.value = storage.todoData;
-        }
-    });
+// 拡張機能のポップアップを開いたときに、保存されている todo があればそれを textarea に表示する
+chrome.storage.local.get(["todoData"], function (storage) {
+    const todoTextArea = document.getElementById("todo") as HTMLInputElement;
+    if (todoTextArea && storage.todoData) {
+        todoTextArea.value = storage.todoData; // 保存されている todo を textarea に表示
+    }
+});
 
-    document.addEventListener("click", (e: MouseEvent) => {
-        const btn = e.target as HTMLButtonElement;
+// ボタンをクリックしたときの処理
+document.addEventListener("click", (e: MouseEvent) => {
+    const btn = e.target as HTMLButtonElement;
 
-        switch (btn?.id) {
-            case "start-btn":
-                btn.id = "reset-btn";
-                btn.textContent = "リセット";
+    switch (btn?.id) {
+        case "start-btn":
+            btn.id = "reset-btn";
+            btn.textContent = "リセット";
+            // ここに background.ts にメッセージを送る処理を書く
+            // chrome.runtime.sendMessage(
+            //     { action: "click-start-btn" },
+            //     function () { }
+            // );
+            break;
 
-                const today = new Date();
-                const hour = today.getHours();
-                const minute = today.getMinutes();
-                const second = today.getSeconds();
+        case "reset-btn":
+            btn.id = "start-btn";
+            btn.textContent = "スタート";
+            break;
 
-                const current_time = hour + "時" + minute + "分" + second + "秒";
-                console.log("time: " + current_time);
-                break;
+        case "save-todo-btn":
+            chrome.runtime.sendMessage(
+                { action: "click-save-todo-btn", todoData: (document.getElementById("todo") as HTMLInputElement).value },
+                function (response) {
+                    alert(response.replyMessage);
+                }
+            );
+            break;
 
-            case "reset-btn":
-                btn.id = "start-btn";
-                btn.textContent = "スタート";
-                break;
-
-            case "save-todo-btn":
-                chrome.runtime.sendMessage(
-                    { action: "click-save-todo-btn", todoData: (document.getElementById("todo") as HTMLInputElement).value },
-                    function (response) {
-                        alert(response.replyMessage);
-                    }
-                );
-                break;
-
-            default:
-                console.log("ボタンでない箇所をクリックしました。");
-                break;
-        }
-    });
-}
+        default:
+            console.log("ボタンでない箇所をクリックしました。");
+            break;
+    }
+});
