@@ -6,19 +6,33 @@ chrome.storage.local.get(["todoData"], function (storage) {
     }
 });
 
-// 拡張機能のポップアップを開いたときに、保存されている残り時間があればそれを表示させる
-chrome.storage.local.get(["state", "minute", "second"], function (storage) {
+// 拡張機能のポップアップを開いたときに、保存されている残り時間と作業内容があればそれらを表示させる
+chrome.storage.local.get(["state", "task", "minute", "second"], function (storage) {
     const timer = document.getElementById("timer") as HTMLElement;
     if (timer && storage.state === "countDown" && storage.minute !== "undefined" && storage.second !== "undefined") {
         const minute = String(storage.minute).padStart(2, "0");
         const second = String(storage.second).padStart(2, "0");
         timer.textContent = `${minute}:${second}`;
     }
+    const task = document.getElementById("task") as HTMLElement;
+    if (task && storage.task !== "undefined") {
+        switch (storage.task) {
+            case "work":
+                task.textContent = "Tomatodo（作業中）";
+                break;
+            case "break":
+                task.textContent = "Tomatodo（休憩中）";
+                break;
+            default:
+                task.textContent = "Tomatodo（待機中）";
+                break;
+        }
+    }
 });
 
 // カウントダウン処理
 setInterval(() => {
-    chrome.storage.local.get(["state", "minute", "second"], function (storage) {
+    chrome.storage.local.get(["state", "task", "minute", "second"], function (storage) {
         if (storage.state === "countDown") {
             const timer = document.getElementById("timer") as HTMLElement;
             const minute = storage.minute;
@@ -26,9 +40,20 @@ setInterval(() => {
             const restSecond = 60 * minute + second;
             const nextSecond = restSecond - 1;
 
-            if (nextSecond === 0) {
-                timer.textContent = "00:00";
-                chrome.storage.local.set({ "state": "wait" });
+            if (nextSecond === -1) {
+                if (storage.task === "work") {
+                    alert("休憩時間に入ります。");
+                    timer.textContent = "05:00";
+                    chrome.storage.local.set({ "state": "countDown", "task": "break", "minute": 5, "second": 0 });
+                    const task = document.getElementById("task") as HTMLElement;
+                    task.textContent = "Tomatodo（休憩中）";
+                } else if (storage.task === "break") {
+                    alert("作業時間に入ります。");
+                    timer.textContent = "25:00";
+                    chrome.storage.local.set({ "state": "countDown", "task": "work", "minute": 25, "second": 0 });
+                    const task = document.getElementById("task") as HTMLElement;
+                    task.textContent = "Tomatodo（作業中）";
+                }
             } else {
                 const newMinute = Math.floor(nextSecond / 60);
                 const newSecond = nextSecond % 60;
@@ -52,12 +77,15 @@ document.addEventListener("click", (e: MouseEvent) => {
             chrome.storage.local.set(
                 {
                     "state": "countDown",
+                    "task": "work",
                     "minute": 25,
                     "second": 0,
                 },
                 function () {
                     const timer = document.getElementById("timer") as HTMLElement;
                     timer.textContent = "25:00";
+                    const task = document.getElementById("task") as HTMLElement;
+                    task.textContent = "Tomatodo（作業中）";
                 }
             );
             break;
@@ -68,12 +96,15 @@ document.addEventListener("click", (e: MouseEvent) => {
             chrome.storage.local.set(
                 {
                     "state": "wait",
+                    "task": "nothing",
                     "minute": 25,
                     "second": 0,
                 },
                 function () {
                     const timer = document.getElementById("timer") as HTMLElement;
                     timer.textContent = "25:00";
+                    const task = document.getElementById("task") as HTMLElement;
+                    task.textContent = "Tomatodo（待機中）";
                 }
             );
             break;
