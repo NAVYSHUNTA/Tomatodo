@@ -16,17 +16,7 @@ chrome.storage.local.get(["state", "task", "minute", "second"], function (storag
     }
     const taskElement = document.getElementById("task") as HTMLElement;
     if (taskElement && storage.task !== undefined) {
-        switch (storage.task) {
-            case "work":
-                taskElement.textContent = "TOMATODO（作業中）";
-                break;
-            case "break":
-                taskElement.textContent = "TOMATODO（休憩中）";
-                break;
-            default:
-                taskElement.textContent = "TOMATODO（待機中）";
-                break;
-        }
+        taskElement.textContent = getTaskTextContent(storage.task);
     }
 });
 
@@ -152,16 +142,18 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     if ("task" in changes) {
         const taskElement = document.getElementById("task") as HTMLElement;
         const task = changes.task.newValue;
-        switch (task) {
-            case "work":
-                taskElement.textContent = "TOMATODO（作業中）";
-                break;
-            case "break":
-                taskElement.textContent = "TOMATODO（休憩中）";
-                break;
-            default:
-                taskElement.textContent = "TOMATODO（待機中）";
-                break;
-        }
+        taskElement.textContent = getTaskTextContent(task);
     }
 });
+
+// タスクの内容を取得する関数
+function getTaskTextContent(task: string): string {
+    switch (task) {
+        case "work":
+            return "TOMATODO（作業中）";
+        case "break":
+            return "TOMATODO（休憩中）";
+        default:
+            return "TOMATODO（待機中）";
+    }
+}
