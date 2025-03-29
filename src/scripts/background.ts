@@ -11,6 +11,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 }
             }
         );
+    } else if (message.action === "click-clear-todo-btn") {
+        // todo をクリアする
+        chrome.storage.local.set(
+            { "todoData": "" },
+            function () {
+                if (chrome.runtime.lastError) {
+                    sendResponse({ status: false, replyMessage: "todo をクリアできませんでした。\nエラーの詳細：" + chrome.runtime.lastError });
+                } else {
+                    sendResponse({ status: true, replyMessage: "todo をクリアしました。" });
+                }
+            }
+        );
     }
     return true;
 });

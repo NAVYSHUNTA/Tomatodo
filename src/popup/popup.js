@@ -3,7 +3,7 @@
 chrome.storage.local.get(["todoData"], function (storage) {
     const todoElement = document.getElementById("todo");
     if (todoElement && storage.todoData) {
-        todoElement.value = storage.todoData; // 保存されている todo を textarea に表示
+        todoElement.value = storage.todoData;
     }
 });
 // 拡張機能のポップアップを開いたときに、保存されている残り時間と作業内容があればそれらを表示させる
@@ -87,6 +87,14 @@ document.addEventListener("click", (e) => {
                 alert(response.replyMessage);
             });
             break;
+        case "clear-todo-btn":
+            chrome.runtime.sendMessage({
+                action: "click-clear-todo-btn",
+                todoData: document.getElementById("todo").value
+            }, function (response) {
+                alert(response.replyMessage);
+            });
+            break;
         default:
             console.log("ボタンでない箇所をクリックしました。");
             break;
@@ -96,6 +104,14 @@ document.addEventListener("click", (e) => {
 chrome.storage.onChanged.addListener((changes, areaName) => {
     if (areaName !== "local") {
         return;
+    }
+    // todo の更新
+    if ("todoData" in changes) {
+        const todoElement = document.getElementById("todo");
+        const todo = changes.todoData.newValue;
+        if (todoElement) {
+            todoElement.value = todo;
+        }
     }
     // 残り時間の更新
     if ("minute" in changes || "second" in changes) {
