@@ -4,11 +4,10 @@ body {
     width: 600px;
     height: 600px;
     margin: 0px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.3fr 0.3fr 0.1fr 1fr 0.1fr;
-    column-gap: 10px;
-    row-gap: 0px;
+    grid-template-columns: repeat(12, 50px);
+    grid-template-rows: repeat(12, 50px);
     color: #333;
+    row-gap: 35px;
     background-color: lightskyblue
 }
 
@@ -16,6 +15,42 @@ h1 {
     font-size: 35px;
     margin: 0px;
     color: #333;
+}
+
+#task {
+    grid-column: 1 / 13;
+}
+
+p {
+    font-size: 100px;
+    margin: 0px;
+    color: #333;
+}
+
+#timer {
+    grid-column: 1 / 13;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin: 20px;
+    font-size: 25px;
+    border-width: 6px;
+    border-radius: 40px;
+    color: white;
+    border-color: #888;
+    background-color: rgb(3, 162, 254);
+    white-space: nowrap;
+}
+
+#start-btn {
+    grid-column: 5 / 9;
+}
+
+#reset-btn {
+    background-color: orangered;
+    grid-column: 5 / 9;
 }
 
 textarea {
@@ -29,24 +64,15 @@ textarea {
     outline: none;
 }
 
-button {
-    width: 25%;
-    padding: 12px;
-    margin: 30px;
-    font-size: 25px;
-    border-width: 6px;
-    border-radius: 40px;
-    color: white;
-    border-color: #888;
-    background-color: rgb(3, 162, 254);
+#todo {
+    grid-column: 1 / 13;
+    grid-row: 4 / 7;
 }
 
-p {
-    font-size: 100px;
-    margin: 0px;
-    color: #333;
+#save-todo-btn {
+    grid-column: 3 / 6;
 }
 
-#reset-btn {
-    background-color: orangered;
+#clear-todo-btn {
+    grid-column: 8 / 11;
 }

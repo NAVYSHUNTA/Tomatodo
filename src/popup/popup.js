@@ -18,13 +18,13 @@ chrome.storage.local.get(["state", "task", "minute", "second"], function (storag
     if (taskElement && storage.task !== undefined) {
         switch (storage.task) {
             case "work":
-                taskElement.textContent = "Tomatodo（作業中）";
+                taskElement.textContent = "TOMATODO（作業中）";
                 break;
             case "break":
-                taskElement.textContent = "Tomatodo（休憩中）";
+                taskElement.textContent = "TOMATODO（休憩中）";
                 break;
             default:
-                taskElement.textContent = "Tomatodo（待機中）";
+                taskElement.textContent = "TOMATODO（待機中）";
                 break;
         }
     }
@@ -116,13 +116,13 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
         const task = changes.task.newValue;
         switch (task) {
             case "work":
-                taskElement.textContent = "Tomatodo（作業中）";
+                taskElement.textContent = "TOMATODO（作業中）";
                 break;
             case "break":
-                taskElement.textContent = "Tomatodo（休憩中）";
+                taskElement.textContent = "TOMATODO（休憩中）";
                 break;
             default:
-                taskElement.textContent = "Tomatodo（待機中）";
+                taskElement.textContent = "TOMATODO（待機中）";
                 break;
         }
     }
