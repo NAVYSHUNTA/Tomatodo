@@ -18,6 +18,22 @@ chrome.storage.local.get(["state", "task", "minute", "second"], function (storag
     if (taskElement && storage.task !== undefined) {
         taskElement.textContent = getTaskTextContent(storage.task);
     }
+    switch (storage.state) {
+        case "countDown":
+            const startBtnElement = document.getElementById("start-btn");
+            if (startBtnElement) {
+                startBtnElement.id = "reset-btn";
+                startBtnElement.textContent = "リセット";
+            }
+            break;
+        default:
+            const resetBtnElement = document.getElementById("reset-btn");
+            if (resetBtnElement) {
+                resetBtnElement.id = "start-btn";
+                resetBtnElement.textContent = "スタート";
+            }
+            break;
+    }
 });
 // カウントダウン処理
 setInterval(() => {
