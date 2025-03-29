@@ -9,6 +9,7 @@ body {
     column-gap: 10px;
     row-gap: 0px;
     color: #333;
+    background-color: lightskyblue
 }
 
 h1 {
@@ -19,20 +20,24 @@ h1 {
 
 textarea {
     width: 90%;
-    height: 95%;
+    height: 100%;
     font-size: 18px;
     color: #333;
+    border-width: 7px;
+    border-color: orange;
+    box-shadow: 10px 10px 5px #666;
+    outline: none;
 }
 
 button {
     width: 25%;
     padding: 12px;
-    margin: 10px;
+    margin: 30px;
     font-size: 25px;
     border-width: 6px;
     border-radius: 40px;
     color: white;
-    border-color: #bbb;
+    border-color: #888;
     background-color: rgb(3, 162, 254);
 }
 
