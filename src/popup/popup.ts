@@ -1,9 +1,6 @@
 // 拡張機能のポップアップを開いたときに、保存されている todo があればそれを textarea に表示する
 chrome.storage.local.get(["todoData"], function (storage) {
-    const todoElement = document.getElementById("todo") as HTMLInputElement;
-    if (todoElement && storage.todoData) {
-        todoElement.value = storage.todoData;
-    }
+    setTextContentById("todo", storage.todoData);
 });
 
 // 拡張機能のポップアップを開いたときに、保存されている残り時間と作業内容があればそれらを表示させる
@@ -14,7 +11,10 @@ chrome.storage.local.get(["state", "task", "minute", "second"], function (storag
         const second = String(storage.second).padStart(2, "0");
         timerElement.textContent = `${minute}:${second}`;
     }
-    setTaskTextContentById("task", storage.task);
+
+    const taskTextContent = getTaskTextContent(storage.task);
+    setTextContentById("task", taskTextContent);
+
     switch (storage.state) {
         case "countDown":
             const startBtnElement = document.getElementById("start-btn") as HTMLButtonElement;
@@ -131,11 +131,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 
     // todo の更新
     if ("todoData" in changes) {
-        const todoElement = document.getElementById("todo") as HTMLInputElement;
-        const todo = changes.todoData.newValue;
-        if (todoElement) {
-            todoElement.value = todo;
-        }
+        setTextContentById("todo", changes.todoData.newValue);
     }
 
     // 残り時間の更新
@@ -154,11 +150,12 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 
     // 作業内容の更新
     if ("task" in changes) {
-        setTaskTextContentById("task", changes.task.newValue);
+        const taskTextContent = getTaskTextContent(changes.task.newValue);
+        setTextContentById("task", taskTextContent);
     }
 });
 
-// タスクの内容を取得する関数
+// テキストコンテンツに格納するタスクの内容を取得する関数
 function getTaskTextContent(task: string): string {
     switch (task) {
         case "work":
@@ -170,11 +167,11 @@ function getTaskTextContent(task: string): string {
     }
 }
 
-// タスクの内容を設定する関数
-function setTaskTextContentById(targetElementName: string, task: string): void {
+// テキストコンテンツを設定する関数
+function setTextContentById(targetElementName: string, value: string): void {
     const targetElement = document.getElementById(targetElementName) as HTMLElement;
     if (targetElement) {
-        targetElement.textContent = getTaskTextContent(task);
+        targetElement.textContent = value;
     } else {
         console.error(`要素が見つかりませんでした。要素名: ${targetElementName}`);
     }
