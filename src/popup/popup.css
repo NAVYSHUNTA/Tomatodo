@@ -45,6 +45,7 @@ button {
 }
 
 #start-btn {
+    background-color: rgb(3, 162, 254);
     grid-column: 5 / 9;
 }
 

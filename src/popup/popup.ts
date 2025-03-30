@@ -17,19 +17,11 @@ chrome.storage.local.get(["state", "task", "minute", "second"], function (storag
 
     switch (storage.state) {
         case "countDown":
-            const startBtnElement = document.getElementById("start-btn") as HTMLButtonElement;
-            if (startBtnElement) {
-                startBtnElement.id = "reset-btn";
-                startBtnElement.textContent = "リセット";
-            }
+            setButtonTextContentAndIdNameById("start-btn", "reset-btn");
             break;
 
         default:
-            const resetBtnElement = document.getElementById("reset-btn") as HTMLButtonElement;
-            if (resetBtnElement) {
-                resetBtnElement.id = "start-btn";
-                resetBtnElement.textContent = "スタート";
-            }
+            setButtonTextContentAndIdNameById("reset-btn", "start-btn");
             break;
     }
 });
@@ -66,8 +58,7 @@ document.addEventListener("click", (e: MouseEvent) => {
 
     switch (btnElement?.id) {
         case "start-btn":
-            btnElement.id = "reset-btn";
-            btnElement.textContent = "リセット";
+            setButtonTextContentAndIdNameById(btnElement.id, "reset-btn");
             chrome.storage.local.set(
                 {
                     "state": "countDown",
@@ -80,8 +71,7 @@ document.addEventListener("click", (e: MouseEvent) => {
             break;
 
         case "reset-btn":
-            btnElement.id = "start-btn";
-            btnElement.textContent = "スタート";
+            setButtonTextContentAndIdNameById(btnElement.id, "start-btn");
             chrome.storage.local.set(
                 {
                     "state": "wait",
@@ -188,4 +178,34 @@ function setValueById(targetElementName: string, newValue: string): void {
     } else {
         console.error(`要素が見つかりませんでした。要素名: ${targetElementName}`);
     }
+}
+
+// id を変更する関数
+function setIdById(targetElementName: string, newId: string): void {
+    const targetElement = document.getElementById(targetElementName) as HTMLButtonElement;
+    if (targetElement) {
+        targetElement.id = newId;
+    } else {
+        console.error(`要素が見つかりませんでした。要素名: ${targetElementName}`);
+    }
+}
+
+// 変更後の id 名を引数として受け取り、変更後のボタン名を取得する関数
+function getNewButtonName(newIdName: string): string {
+    switch (newIdName) {
+        case "start-btn":
+            return "スタート";
+        case "reset-btn":
+            return "リセット";
+        default:
+            console.error(`要素が見つかりませんでした。要素名: ${newIdName}`);
+            return "";
+    }
+}
+
+// ボタンのテキストコンテンツと id を更新する関数
+function setButtonTextContentAndIdNameById(currentButtonIdName: string, newIdName: string): void {
+    const newButtonName = getNewButtonName(newIdName);
+    setTextContentById(currentButtonIdName, newButtonName);
+    setIdById(currentButtonIdName, newIdName); // id 変更は処理の最後で行う
 }
