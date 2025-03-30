@@ -14,10 +14,7 @@ chrome.storage.local.get(["state", "task", "minute", "second"], function (storag
         const second = String(storage.second).padStart(2, "0");
         timerElement.textContent = `${minute}:${second}`;
     }
-    const taskElement = document.getElementById("task");
-    if (taskElement && storage.task !== undefined) {
-        taskElement.textContent = getTaskTextContent(storage.task);
-    }
+    setTaskTextContentById("task", storage.task);
     switch (storage.state) {
         case "countDown":
             const startBtnElement = document.getElementById("start-btn");
@@ -134,9 +131,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     }
     // 作業内容の更新
     if ("task" in changes) {
-        const taskElement = document.getElementById("task");
-        const task = changes.task.newValue;
-        taskElement.textContent = getTaskTextContent(task);
+        setTaskTextContentById("task", changes.task.newValue);
     }
 });
 // タスクの内容を取得する関数
@@ -148,5 +143,15 @@ function getTaskTextContent(task) {
             return "TOMATODO（休憩中）";
         default:
             return "TOMATODO（待機中）";
+    }
+}
+// タスクの内容を設定する関数
+function setTaskTextContentById(targetElementName, task) {
+    const targetElement = document.getElementById(targetElementName);
+    if (targetElement) {
+        targetElement.textContent = getTaskTextContent(task);
+    }
+    else {
+        console.error(`要素が見つかりませんでした。要素名: ${targetElementName}`);
     }
 }
