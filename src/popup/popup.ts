@@ -106,10 +106,13 @@ document.addEventListener("click", (e: MouseEvent) => {
             break;
 
         case "clear-todo-btn":
+            const todoTextContent: string = "";
+            setValueById("todo", todoTextContent); // 保存せずに入力された todo もクリアする
+
             chrome.runtime.sendMessage(
                 {
                     action: "click-clear-todo-btn",
-                    todoData: (document.getElementById("todo") as HTMLInputElement).value
+                    todoData: todoTextContent,
                 },
                 function (response) {
                     alert(response.replyMessage);
@@ -168,10 +171,19 @@ function getTaskTextContent(task: string): string {
 }
 
 // テキストコンテンツを設定する関数
-function setTextContentById(targetElementName: string, value: string): void {
+function setTextContentById(targetElementName: string, newTextContent: string): void {
     const targetElement = document.getElementById(targetElementName) as HTMLElement;
     if (targetElement) {
-        targetElement.textContent = value;
+        targetElement.textContent = newTextContent;
+    } else {
+        console.error(`要素が見つかりませんでした。要素名: ${targetElementName}`);
+    }
+}
+
+function setValueById(targetElementName: string, newValue: string): void {
+    const targetElement = document.getElementById(targetElementName) as HTMLInputElement;
+    if (targetElement) {
+        targetElement.value = newValue;
     } else {
         console.error(`要素が見つかりませんでした。要素名: ${targetElementName}`);
     }
