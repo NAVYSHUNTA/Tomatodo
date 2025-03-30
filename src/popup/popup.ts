@@ -180,6 +180,7 @@ function setTextContentById(targetElementName: string, newTextContent: string): 
     }
 }
 
+// 入力欄の内容を設定する関数
 function setValueById(targetElementName: string, newValue: string): void {
     const targetElement = document.getElementById(targetElementName) as HTMLInputElement;
     if (targetElement) {

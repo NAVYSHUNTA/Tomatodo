@@ -152,6 +152,7 @@ function setTextContentById(targetElementName, newTextContent) {
         console.error(`要素が見つかりませんでした。要素名: ${targetElementName}`);
     }
 }
+// 入力欄の内容を設定する関数
 function setValueById(targetElementName, newValue) {
     const targetElement = document.getElementById(targetElementName);
     if (targetElement) {
