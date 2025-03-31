@@ -66,7 +66,7 @@ document.addEventListener("click", (e) => {
                 "task": TASK_WORK,
                 "minute": 25,
                 "second": 0,
-            }, function () { });
+            });
             break;
         case RESET_BTN_ID:
             setButtonTextContentAndIdNameById(RESET_BTN_ID, START_BTN_ID);
@@ -75,7 +75,7 @@ document.addEventListener("click", (e) => {
                 "task": TASK_NOTHING,
                 "minute": 25,
                 "second": 0,
-            }, function () { });
+            });
             break;
         case SAVE_TODO_BTN_ID:
             chrome.runtime.sendMessage({

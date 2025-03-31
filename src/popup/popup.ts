@@ -76,8 +76,7 @@ document.addEventListener("click", (e: MouseEvent) => {
                     "task": TASK_WORK,
                     "minute": 25,
                     "second": 0,
-                },
-                function () { }
+                }
             );
             break;
 
@@ -89,8 +88,7 @@ document.addEventListener("click", (e: MouseEvent) => {
                     "task": TASK_NOTHING,
                     "minute": 25,
                     "second": 0,
-                },
-                function () { }
+                }
             );
             break;
 
