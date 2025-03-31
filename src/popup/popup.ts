@@ -5,12 +5,7 @@ chrome.storage.local.get(["todoData"], function (storage) {
 
 // 拡張機能のポップアップを開いたときに、保存されている残り時間と作業内容があればそれらを表示させる
 chrome.storage.local.get(["state", "task", "minute", "second"], function (storage) {
-    const timerElement = document.getElementById("timer") as HTMLElement;
-    if (timerElement && storage.state === "countDown" && storage.minute !== undefined && storage.second !== undefined) {
-        const minute = String(storage.minute).padStart(2, "0");
-        const second = String(storage.second).padStart(2, "0");
-        timerElement.textContent = `${minute}:${second}`;
-    }
+    setMinuteAndSecondDisplay(storage.minute, storage.second);
 
     const taskTextContent = getTaskTextContent(storage.task);
     setTextContentById("task", taskTextContent);
@@ -130,14 +125,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     // 残り時間の更新
     if ("minute" in changes || "second" in changes) {
         chrome.storage.local.get(["minute", "second"], function (storage) {
-            const minute = storage.minute;
-            const second = storage.second;
-            if (minute !== undefined && second !== undefined) {
-                const timerElement = document.getElementById("timer") as HTMLElement;
-                const displayMinute = String(minute).padStart(2, "0");
-                const displaySecond = String(second).padStart(2, "0");
-                timerElement.textContent = `${displayMinute}:${displaySecond}`;
-            }
+            setMinuteAndSecondDisplay(storage.minute, storage.second);
         });
     }
 
@@ -208,4 +196,16 @@ function setButtonTextContentAndIdNameById(currentButtonIdName: string, newIdNam
     const newButtonName = getNewButtonName(newIdName);
     setTextContentById(currentButtonIdName, newButtonName);
     setIdById(currentButtonIdName, newIdName); // id 変更は処理の最後で行う
+}
+
+// 分と秒を表示する関数
+function setMinuteAndSecondDisplay(minute: number, second: number): void {
+    if (minute !== undefined && second !== undefined) {
+        const displayMinute = String(minute).padStart(2, "0");
+        const displaySecond = String(second).padStart(2, "0");
+        const newTextContent = `${displayMinute}:${displaySecond}`;
+        setTextContentById("timer", newTextContent);
+    } else {
+        console.error(`分または秒の値が未定義です。minute: ${minute}, second: ${second}`);
+    }
 }
