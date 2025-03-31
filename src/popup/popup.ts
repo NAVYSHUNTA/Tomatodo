@@ -26,16 +26,12 @@ chrome.storage.local.get(["state", "task", "minute", "second"], function (storag
     const taskTextContent = getTaskTextContent(storage.task);
     setTextContentById(TASK_ID, taskTextContent);
 
-    switch (storage.state) {
-        case COUNTDOWN_STATE:
-            setButtonTextContentAndIdNameById(START_BTN_ID, RESET_BTN_ID);
-            break;
-
-        default:
-            setButtonTextContentAndIdNameById(RESET_BTN_ID, START_BTN_ID);
-            break;
+    // スタートボタン以外で表示する必要がある場合のみ処理
+    if (storage && storage.state === COUNTDOWN_STATE) {
+        setButtonTextContentAndIdNameById(START_BTN_ID, RESET_BTN_ID);
     }
-});
+}
+);
 
 // カウントダウン処理
 setInterval(() => {
@@ -78,6 +74,8 @@ document.addEventListener("click", (e: MouseEvent) => {
                     "second": 0,
                 }
             );
+
+            chrome.runtime.sendMessage({ action: "click-start-btn" });
             break;
 
         case RESET_BTN_ID:
@@ -90,6 +88,8 @@ document.addEventListener("click", (e: MouseEvent) => {
                     "second": 0,
                 }
             );
+
+            chrome.runtime.sendMessage({ action: "click-reset-btn" });
             break;
 
         case SAVE_TODO_BTN_ID:
