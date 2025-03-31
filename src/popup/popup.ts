@@ -19,6 +19,12 @@ const DEFAULT_WORK_SECOND: number = 0;
 const DEFAULT_BREAK_MINUTE: number = 5;
 const DEFAULT_BREAK_SECOND: number = 0;
 
+// デバッグ用
+// const DEFAULT_WORK_MINUTE: number = 0;
+// const DEFAULT_WORK_SECOND: number = 4;
+// const DEFAULT_BREAK_MINUTE: number = 0;
+// const DEFAULT_BREAK_SECOND: number = 6;
+
 // 拡張機能のポップアップを開いたときに、保存されている todo があればそれを textarea に表示する
 chrome.storage.local.get(["todoData"], function (storage) {
     setTextContentById(TODO_TEXTAREA_ID, storage.todoData);
@@ -109,13 +115,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "countDownEnd") {
         switch (message.task) {
             case TASK_WORK:
-                alert("休憩時間に入ります。");
+                chrome.notifications.create({
+                    type: "basic",
+                    iconUrl: "../images/icon_128.png",
+                    title: "TOMATODO",
+                    message: "休憩時間に入ります。",
+                    priority: 2,
+                });
                 chrome.storage.local.set({ "task": TASK_BREAK, "minute": DEFAULT_BREAK_MINUTE, "second": DEFAULT_BREAK_SECOND });
                 chrome.runtime.sendMessage({ action: "restartCountDown" });
                 break;
 
             case TASK_BREAK:
-                alert("作業時間に入ります。");
+                chrome.notifications.create({
+                    type: "basic",
+                    iconUrl: "../images/icon_128.png",
+                    title: "TOMATODO",
+                    message: "作業時間に入ります。",
+                    priority: 2,
+                });
                 chrome.storage.local.set({ "task": TASK_WORK, "minute": DEFAULT_WORK_MINUTE, "second": DEFAULT_WORK_SECOND });
                 chrome.runtime.sendMessage({ action: "restartCountDown" });
                 break;
