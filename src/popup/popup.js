@@ -25,32 +25,6 @@ chrome.storage.local.get(["state", "task", "minute", "second"], function (storag
         setButtonTextContentAndIdNameById(START_BTN_ID, RESET_BTN_ID);
     }
 });
-// カウントダウン処理
-setInterval(() => {
-    chrome.storage.local.get(["state", "task", "minute", "second"], function (storage) {
-        if (storage.state === COUNTDOWN_STATE) {
-            const minute = storage.minute;
-            const second = storage.second;
-            const restSecond = 60 * minute + second;
-            const nextSecond = restSecond - 1;
-            if (nextSecond === -1) {
-                if (storage.task === TASK_WORK) {
-                    alert("休憩時間に入ります。");
-                    chrome.storage.local.set({ "task": TASK_BREAK, "minute": 5, "second": 0 });
-                }
-                else if (storage.task === TASK_BREAK) {
-                    alert("作業時間に入ります。");
-                    chrome.storage.local.set({ "task": TASK_WORK, "minute": 25, "second": 0 });
-                }
-            }
-            else {
-                const newMinute = Math.floor(nextSecond / 60);
-                const newSecond = nextSecond % 60;
-                chrome.storage.local.set({ "minute": newMinute, "second": newSecond });
-            }
-        }
-    });
-}, 1000);
 // ボタンをクリックしたときの処理
 document.addEventListener("click", (e) => {
     const btnElement = e.target;
