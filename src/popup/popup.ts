@@ -14,6 +14,11 @@ const TASK_NOTHING: string = "nothing";
 const COUNTDOWN_STATE: string = "countDown";
 const WAIT_STATE: string = "wait";
 
+const DEFAULT_WORK_MINUTE: number = 25;
+const DEFAULT_WORK_SECOND: number = 0;
+const DEFAULT_BREAK_MINUTE: number = 5;
+const DEFAULT_BREAK_SECOND: number = 0;
+
 // 拡張機能のポップアップを開いたときに、保存されている todo があればそれを textarea に表示する
 chrome.storage.local.get(["todoData"], function (storage) {
     setTextContentById(TODO_TEXTAREA_ID, storage.todoData);
@@ -44,8 +49,8 @@ document.addEventListener("click", (e: MouseEvent) => {
                 {
                     "state": COUNTDOWN_STATE,
                     "task": TASK_WORK,
-                    "minute": 25,
-                    "second": 0,
+                    "minute": DEFAULT_WORK_MINUTE,
+                    "second": DEFAULT_WORK_SECOND,
                 }
             );
 
@@ -58,8 +63,8 @@ document.addEventListener("click", (e: MouseEvent) => {
                 {
                     "state": WAIT_STATE,
                     "task": TASK_NOTHING,
-                    "minute": 25,
-                    "second": 0,
+                    "minute": DEFAULT_WORK_MINUTE,
+                    "second": DEFAULT_WORK_SECOND,
                 }
             );
 
@@ -97,6 +102,28 @@ document.addEventListener("click", (e: MouseEvent) => {
             console.log("ボタンでない箇所をクリックしました。");
             break;
     }
+});
+
+// カウントダウンが終わったことを通知し、storage の内容を更新する
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === "countDownEnd") {
+        switch (message.task) {
+            case TASK_WORK:
+                alert("休憩時間に入ります。");
+                chrome.storage.local.set({ "task": TASK_BREAK, "minute": DEFAULT_BREAK_MINUTE, "second": DEFAULT_BREAK_SECOND });
+                chrome.runtime.sendMessage({ action: "restartCountDown" });
+                break;
+            case TASK_BREAK:
+                alert("作業時間に入ります。");
+                chrome.storage.local.set({ "task": TASK_WORK, "minute": DEFAULT_WORK_MINUTE, "second": DEFAULT_WORK_SECOND });
+                chrome.runtime.sendMessage({ action: "restartCountDown" });
+                break;
+            default:
+                // 何もしない
+                break;
+        }
+    }
+    return true;
 });
 
 // storage の内容が書き換えられたらポップアップの内容を更新する
@@ -189,8 +216,10 @@ function setButtonTextContentAndIdNameById(currentButtonIdName: string, newIdNam
 // 分と秒を表示する関数
 function setMinuteAndSecondDisplay(minute: number, second: number): void {
     if (minute !== undefined && second !== undefined) {
-        const displayMinute = String(minute).padStart(2, "0");
-        const displaySecond = String(second).padStart(2, "0");
+        const MAX_DIGIT_LENGTH: number = 2;
+        const FILL_ZERO: string = "0";
+        const displayMinute = String(minute).padStart(MAX_DIGIT_LENGTH, FILL_ZERO);
+        const displaySecond = String(second).padStart(MAX_DIGIT_LENGTH, FILL_ZERO);
         const newTextContent = `${displayMinute}:${displaySecond}`;
         setTextContentById(TIMER_ID, newTextContent);
     } else {
