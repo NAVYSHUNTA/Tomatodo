@@ -32,28 +32,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         case "click-start-btn":
             // カウントダウンを開始する
-            countDownInterval = setInterval(() => {
-                chrome.storage.local.get(["state", "task", "minute", "second"], function (storage) {
-                    if (storage.state === "countDown") {
-                        const minute = storage.minute;
-                        const second = storage.second;
-                        const restSecond = 60 * minute + second;
-                        const nextSecond = restSecond - 1;
-
-                        if (nextSecond === -1) {
-                            chrome.runtime.sendMessage({
-                                action: "countDownEnd",
-                                task: storage.task,
-                            });
-                            clearInterval(countDownInterval);
-                        } else {
-                            const newMinute = Math.floor(nextSecond / 60);
-                            const newSecond = nextSecond % 60;
-                            chrome.storage.local.set({ "minute": newMinute, "second": newSecond });
-                        }
-                    }
-                });
-            }, 1000);
+            countDownInterval = setInterval(setCountDownInterval, 1000);
             break;
 
         case "click-reset-btn":
@@ -63,30 +42,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         case "restartCountDown":
             // カウントダウンを再開する
-            countDownInterval = setInterval(() => {
-                chrome.storage.local.get(["state", "task", "minute", "second"], function (storage) {
-                    if (storage.state === "countDown") {
-                        const minute = storage.minute;
-                        const second = storage.second;
-                        const restSecond = 60 * minute + second;
-                        const nextSecond = restSecond - 1;
-
-                        if (nextSecond === -1) {
-                            chrome.runtime.sendMessage({
-                                action: "countDownEnd",
-                                task: storage.task,
-                            });
-                            clearInterval(countDownInterval);
-                        } else {
-                            const newMinute = Math.floor(nextSecond / 60);
-                            const newSecond = nextSecond % 60;
-                            chrome.storage.local.set({ "minute": newMinute, "second": newSecond });
-                        }
-                    }
-                });
-            }, 1000);
+            countDownInterval = setInterval(setCountDownInterval, 1000);
             break;
-
 
         default:
             // 何もしない
@@ -96,3 +53,27 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     return true;
 });
+
+// カウントダウンを行う関数
+function setCountDownInterval() {
+    chrome.storage.local.get(["state", "task", "minute", "second"], function (storage) {
+        if (storage.state === "countDown") {
+            const minute = storage.minute;
+            const second = storage.second;
+            const restSecond = 60 * minute + second;
+            const nextSecond = restSecond - 1;
+
+            if (nextSecond === -1) {
+                chrome.runtime.sendMessage({
+                    action: "countDownEnd",
+                    task: storage.task,
+                });
+                clearInterval(countDownInterval);
+            } else {
+                const newMinute = Math.floor(nextSecond / 60);
+                const newSecond = nextSecond % 60;
+                chrome.storage.local.set({ "minute": newMinute, "second": newSecond });
+            }
+        }
+    });
+}
