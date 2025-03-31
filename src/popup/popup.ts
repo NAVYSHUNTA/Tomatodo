@@ -113,11 +113,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 chrome.storage.local.set({ "task": TASK_BREAK, "minute": DEFAULT_BREAK_MINUTE, "second": DEFAULT_BREAK_SECOND });
                 chrome.runtime.sendMessage({ action: "restartCountDown" });
                 break;
+
             case TASK_BREAK:
                 alert("作業時間に入ります。");
                 chrome.storage.local.set({ "task": TASK_WORK, "minute": DEFAULT_WORK_MINUTE, "second": DEFAULT_WORK_SECOND });
                 chrome.runtime.sendMessage({ action: "restartCountDown" });
                 break;
+
             default:
                 // 何もしない
                 break;
@@ -156,8 +158,10 @@ function getTaskTextContent(task: string): string {
     switch (task) {
         case TASK_WORK:
             return "TOMATODO（作業中）";
+
         case TASK_BREAK:
             return "TOMATODO（休憩中）";
+
         default:
             return "TOMATODO（待機中）";
     }
@@ -198,8 +202,10 @@ function getNewButtonName(newIdName: string): string {
     switch (newIdName) {
         case START_BTN_ID:
             return "スタート";
+
         case RESET_BTN_ID:
             return "リセット";
+
         default:
             console.error(`要素が見つかりませんでした。要素名: ${newIdName}`);
             return "";
