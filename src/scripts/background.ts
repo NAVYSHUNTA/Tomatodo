@@ -2,7 +2,7 @@ let countDownInterval: NodeJS.Timeout | undefined = undefined;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
-        case "click-save-todo-btn":
+        case "clickSaveTodoBtn":
             // todo を保存する
             chrome.storage.local.set(
                 { "todoData": message.todoData },
@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             );
             break;
 
-        case "click-clear-todo-btn":
+        case "clickClearTodoBtn":
             // todo をクリアする
             chrome.storage.local.set(
                 { "todoData": "" },
@@ -30,12 +30,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             );
             break;
 
-        case "click-start-btn":
+        case "clickStartBtn":
             // カウントダウンを開始する
             countDownInterval = setInterval(setCountDownInterval, 1000);
             break;
 
-        case "click-reset-btn":
+        case "clickResetBtn":
             // カウントダウンを終了する
             clearInterval(countDownInterval);
             break;

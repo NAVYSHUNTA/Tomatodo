@@ -54,7 +54,7 @@ document.addEventListener("click", (e: MouseEvent) => {
                 }
             );
 
-            chrome.runtime.sendMessage({ action: "click-start-btn" });
+            chrome.runtime.sendMessage({ action: "clickStartBtn" });
             break;
 
         case RESET_BTN_ID:
@@ -68,13 +68,13 @@ document.addEventListener("click", (e: MouseEvent) => {
                 }
             );
 
-            chrome.runtime.sendMessage({ action: "click-reset-btn" });
+            chrome.runtime.sendMessage({ action: "clickResetBtn" });
             break;
 
         case SAVE_TODO_BTN_ID:
             chrome.runtime.sendMessage(
                 {
-                    action: "click-save-todo-btn",
+                    action: "clickSaveTodoBtn",
                     todoData: (document.getElementById(TODO_TEXTAREA_ID) as HTMLInputElement).value
                 },
                 function (response) {
@@ -89,7 +89,7 @@ document.addEventListener("click", (e: MouseEvent) => {
 
             chrome.runtime.sendMessage(
                 {
-                    action: "click-clear-todo-btn",
+                    action: "clickClearTodoBtn",
                     todoData: todoTextContent,
                 },
                 function (response) {

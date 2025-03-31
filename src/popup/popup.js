@@ -41,7 +41,7 @@ document.addEventListener("click", (e) => {
                 "minute": DEFAULT_WORK_MINUTE,
                 "second": DEFAULT_WORK_SECOND,
             });
-            chrome.runtime.sendMessage({ action: "click-start-btn" });
+            chrome.runtime.sendMessage({ action: "clickStartBtn" });
             break;
         case RESET_BTN_ID:
             setButtonTextContentAndIdNameById(RESET_BTN_ID, START_BTN_ID);
@@ -51,11 +51,11 @@ document.addEventListener("click", (e) => {
                 "minute": DEFAULT_WORK_MINUTE,
                 "second": DEFAULT_WORK_SECOND,
             });
-            chrome.runtime.sendMessage({ action: "click-reset-btn" });
+            chrome.runtime.sendMessage({ action: "clickResetBtn" });
             break;
         case SAVE_TODO_BTN_ID:
             chrome.runtime.sendMessage({
-                action: "click-save-todo-btn",
+                action: "clickSaveTodoBtn",
                 todoData: document.getElementById(TODO_TEXTAREA_ID).value
             }, function (response) {
                 alert(response.replyMessage);
@@ -65,7 +65,7 @@ document.addEventListener("click", (e) => {
             const todoTextContent = "";
             setValueById(TODO_TEXTAREA_ID, todoTextContent); // 保存せずに入力された todo もクリアする
             chrome.runtime.sendMessage({
-                action: "click-clear-todo-btn",
+                action: "clickClearTodoBtn",
                 todoData: todoTextContent,
             }, function (response) {
                 alert(response.replyMessage);
