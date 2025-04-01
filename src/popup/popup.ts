@@ -14,16 +14,16 @@ const TASK_NOTHING: string = "nothing";
 const COUNTDOWN_STATE: string = "countDown";
 const WAIT_STATE: string = "wait";
 
-// const DEFAULT_WORK_MINUTE: number = 25;
-// const DEFAULT_WORK_SECOND: number = 0;
-// const DEFAULT_BREAK_MINUTE: number = 5;
-// const DEFAULT_BREAK_SECOND: number = 0;
+const DEFAULT_WORK_MINUTE: number = 25;
+const DEFAULT_WORK_SECOND: number = 0;
+const DEFAULT_BREAK_MINUTE: number = 5;
+const DEFAULT_BREAK_SECOND: number = 0;
 
 // デバッグ用
-const DEFAULT_WORK_MINUTE: number = 0;
-const DEFAULT_WORK_SECOND: number = 4;
-const DEFAULT_BREAK_MINUTE: number = 0;
-const DEFAULT_BREAK_SECOND: number = 6;
+// const DEFAULT_WORK_MINUTE: number = 0;
+// const DEFAULT_WORK_SECOND: number = 4;
+// const DEFAULT_BREAK_MINUTE: number = 0;
+// const DEFAULT_BREAK_SECOND: number = 6;
 
 // 拡張機能のポップアップを開いたときに、保存されている todo があればそれを textarea に表示する
 chrome.storage.local.get(["todoData"], function (storage) {
