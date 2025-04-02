@@ -8,8 +8,8 @@
 
 # 使い方
 1. アプリを開きます。
-2. 今から取り組むもの、今日中に取り組みたいものを todo に記入します。例えば次のような感じになるでしょう。<br>
-   <img width="640" alt="todo_example" src="https://github.com/user-attachments/assets/6c9c6777-629a-4c43-9f7a-fd4526f87f37" /><br><br>
+2. 今から取り組むもの、今日中に取り組みたいものを todo に記入します。例えば次のような感じになるでしょう。<br><br>
+   <img width="640" alt="todo_example" src="https://github.com/user-attachments/assets/6c9c6777-629a-4c43-9f7a-fd4526f87f37" /><br>
 3. 「クリア」ボタンを押すと todo が白紙になります。白紙にしたいときに必要に応じてこのボタンを活用してみてください。
 4. todo を記入し終えたら「保存」ボタンを押します。
 5. 「スタート」ボタンを押して今から取り組む項目に 25 分間集中して取り組みます。
