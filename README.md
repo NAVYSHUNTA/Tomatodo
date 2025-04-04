@@ -1,7 +1,7 @@
-# TOMATODO とは何か
+# Tomatodo とは何か
 やることリストを管理しつつ、ポモドーロ・テクニックが活用できるアプリです（Chrome 拡張機能）。
 このテクニックは、物事に集中して取り組むために考えられたもので 25 分間の作業時間と 5 分間の休憩時間で構成されています。
-ポモドーロはイタリア語で「トマト」という意味があり、todo と組み合わせて TOMATODO というアプリ名にしました。
+ポモドーロはイタリア語で「トマト」という意味があり、todo と組み合わせて Tomatodo というアプリ名にしました。
 
 # インストール方法
 [こちらから](https://chromewebstore.google.com/detail/tomatodo/blemdkcfefnelhhkplbiieendbiakdhf) インストールできます。
