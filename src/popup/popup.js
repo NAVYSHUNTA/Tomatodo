@@ -77,7 +77,6 @@ document.addEventListener("click", (e) => {
             });
             break;
         default:
-            console.log("ボタンでない箇所をクリックしました。");
             break;
     }
 });

@@ -104,7 +104,6 @@ document.addEventListener("click", (e: MouseEvent) => {
             break;
 
         default:
-            console.log("ボタンでない箇所をクリックしました。");
             break;
     }
 });

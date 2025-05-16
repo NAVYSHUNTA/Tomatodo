@@ -1,4 +1,5 @@
 let countDownInterval: NodeJS.Timeout | undefined = undefined;
+const INTERVAL_1000MS: number = 1000;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
@@ -8,7 +9,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 { "todoData": message.todoData },
                 function () {
                     if (chrome.runtime.lastError) {
-                        sendResponse({ status: false, replyMessage: "todo を保存できませんでした。\nエラーの詳細：" + chrome.runtime.lastError });
+                        sendResponse({ status: false, replyMessage: `todo を保存できませんでした。\nエラーの詳細：${chrome.runtime.lastError}` });
                     } else {
                         sendResponse({ status: true, replyMessage: "todo を保存しました。" });
                     }
@@ -22,7 +23,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 { "todoData": "" },
                 function () {
                     if (chrome.runtime.lastError) {
-                        sendResponse({ status: false, replyMessage: "todo をクリアできませんでした。\nエラーの詳細：" + chrome.runtime.lastError });
+                        sendResponse({ status: false, replyMessage: `todo をクリアできませんでした。\nエラーの詳細：${chrome.runtime.lastError}` });
                     } else {
                         sendResponse({ status: true, replyMessage: "todo をクリアしました。" });
                     }
@@ -32,7 +33,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         case "clickStartBtn":
             // カウントダウンを開始する
-            countDownInterval = setInterval(setCountDownInterval, 1000);
+            countDownInterval = setInterval(setCountDownInterval, INTERVAL_1000MS);
             break;
 
         case "clickResetBtn":
@@ -42,13 +43,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         case "restartCountDown":
             // カウントダウンを再開する
-            countDownInterval = setInterval(setCountDownInterval, 1000);
+            countDownInterval = setInterval(setCountDownInterval, INTERVAL_1000MS);
             break;
 
         default:
             // 何もしない
             console.log("ポップアップからのメッセージを受信しましたが、処理するアクションがありません。");
-            console.log("受信したアクション：" + message.action);
+            console.log(`受信したアクション：${message.action}`);
             break;
     }
     return true;
