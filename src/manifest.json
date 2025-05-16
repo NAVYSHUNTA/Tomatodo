@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Tomatodo",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "ポモドーロ・テクニックが使えるタスク管理アプリ",
     "icons": {
         "16": "images/icon_16.png",
