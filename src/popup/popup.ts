@@ -91,16 +91,6 @@ document.addEventListener("click", (e: MouseEvent) => {
         case CLEAR_TODO_BTN_ID:
             const todoTextContent: string = "";
             setValueById(TODO_TEXTAREA_ID, todoTextContent); // 保存せずに入力された todo もクリアする
-
-            chrome.runtime.sendMessage(
-                {
-                    action: "clickClearTodoBtn",
-                    todoData: todoTextContent,
-                },
-                function (response) {
-                    alert(response.replyMessage);
-                }
-            );
             break;
 
         default:

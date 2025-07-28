@@ -14,17 +14,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 }
             });
             break;
-        case "clickClearTodoBtn":
-            // todo をクリアする
-            chrome.storage.local.set({ "todoData": "" }, function () {
-                if (chrome.runtime.lastError) {
-                    sendResponse({ status: false, replyMessage: `todo をクリアできませんでした。\nエラーの詳細：${chrome.runtime.lastError}` });
-                }
-                else {
-                    sendResponse({ status: true, replyMessage: "todo をクリアしました。" });
-                }
-            });
-            break;
         case "clickStartBtn":
             // カウントダウンを開始する
             countDownInterval = setInterval(setCountDownInterval, INTERVAL_1000MS);
