@@ -1,6 +1,6 @@
 {
   "name": "tomatodo",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Chrome 拡張機能の個人開発",
   "main": "index.js",
   "scripts": {
